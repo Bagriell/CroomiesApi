@@ -35,6 +35,7 @@ class Habitation(Model):
     compatibility_score = FloatField()
     is_furnished = BooleanField()
 
+
     def __str__(self):
         return "%s %s" % (self.title, self.description)
 
