@@ -14,8 +14,6 @@ from django.core import serializers
 from rest_framework import status
 
 
-
-
 class AddressView(viewsets.ModelViewSet):
     serializer_class = AddressSerializer
     queryset = Address.objects.all()
@@ -30,9 +28,10 @@ class RegisterAPI(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response({
-        "user": UserSerializer(user, context=self.get_serializer_context()).data,
-        "token": AuthToken.objects.create(user)[1]
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
         })
+
 
 class LoginAPI(KnoxLoginView):
     permission_classes = (permissions.AllowAny,)
