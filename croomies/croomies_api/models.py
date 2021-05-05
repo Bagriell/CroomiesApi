@@ -2,16 +2,15 @@ from django.db import models
 from django.db.models import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import BooleanField, CharField, EmailField, FloatField, IntegerField, TextField, URLField
-from django.db.models.fields.related import ForeignKey, ManyToManyField
+from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 
 # Mindmap : https://www.mindmeister.com/fr/1814486318?t=YE8gxhCFsd
 
 
-DEFAULT_ID = 1
-
 # Chantier: prevoir upload/photo/video/type de document != de doc officiels
 class Media(Model):
     url = URLField()
+    type_of = CharField(max_length=20)
 
     def __str__(self):
         return "%s" % (self.url)
@@ -26,14 +25,15 @@ class Address(Model):
     def __str__(self):
         return "%s %s" % (self.city, self.address)
 
-class Habitation(Model): #! TODO à faire proprement
+class Habitation(Model): #! TODO serializers / views à faire proprement
     title = CharField(max_length=20)
     rooms_nb = IntegerField()
     area = IntegerField()
-    id_address = ForeignKey(Address, on_delete=CASCADE, default=DEFAULT_ID)    # Shop-django / Django-address package
+    id_address = OneToOneField(Address, on_delete=CASCADE)    # Shop-django / Django-address package
     description = TextField()
     compatibility_score = FloatField()
     is_furnished = BooleanField()
+    price = IntegerField()
 
 
     def __str__(self):
@@ -65,37 +65,37 @@ class User(Model):
     description = TextField()
     email = EmailField()
     password = CharField(max_length=20)
-    id_media = ForeignKey(Media, on_delete=CASCADE, default=DEFAULT_ID)
+    id_media = ForeignKey(Media, on_delete=CASCADE)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
 
 
 class Music_user(Model):
-    id_music = ForeignKey(Music, on_delete=CASCADE, default=DEFAULT_ID)
-    id_user = ForeignKey(User, on_delete=CASCADE, default=DEFAULT_ID)
+    id_music = ManyToManyField(Music)
+    id_user = ManyToManyField(User)
 
     def __str__(self):
         return "%s %s" % (self.id_music, self.id_user)
 
 class Film_user(Model):
-    id_film = ForeignKey(Film, on_delete=CASCADE, default=DEFAULT_ID )
-    id_user = ForeignKey(User, on_delete=CASCADE, default=DEFAULT_ID )
+    id_film = ManyToManyField(Film)
+    id_user = ManyToManyField(User)
 
     def __str__(self):
         return "%s %s" % (self.id_film, self.id_user)
 
-class User_sport(Model):
-    id_sport = ForeignKey(Sport, on_delete=CASCADE, default=DEFAULT_ID)
-    id_user = ForeignKey(User, on_delete=CASCADE, default=DEFAULT_ID)
+class Sport_user(Model):
+    id_sport = ManyToManyField(Sport)
+    id_user = ManyToManyField(User)
 
     def __str__(self):
         return "%s %s" % (self.id_sport, self.id_user)
 
 
 class Seeker(Model):
-    id_user = ForeignKey(User, on_delete=CASCADE, default=DEFAULT_ID)
-    id_adress_search = ForeignKey(Address, on_delete=CASCADE, default=DEFAULT_ID)
+    id_user = ForeignKey(User, on_delete=CASCADE)
+    id_adress_search = OneToOneField(Address, on_delete=CASCADE)
     budget_min = IntegerField()
     budget_max = IntegerField()
 
@@ -108,15 +108,9 @@ class Seeker(Model):
     def __str__(self):
         return "%s %s" % (self.id_user, self.id_localisation_search)
 
-class Matcher(Model):
-    id_seeker = ForeignKey(Seeker, on_delete=CASCADE, default=DEFAULT_ID)
-
-    def __str__(self):
-        return "%s %s" % (self.id_seeker)
-
 class Matching(Model):
-    id_matcher = ForeignKey(Matcher, on_delete=CASCADE, default=DEFAULT_ID)
-    id_seeker = ForeignKey(Seeker, on_delete=CASCADE, default=DEFAULT_ID)
+    id_user = ForeignKey(User, on_delete=CASCADE)
+    id_seeker = ForeignKey(Seeker, on_delete=CASCADE)
     skip = BooleanField(default=False)
     like = BooleanField(default=False)
 
@@ -125,15 +119,15 @@ class Matching(Model):
 
 
 class Roomate_in_habitation:
-    id_habitation = ForeignKey(Habitation, on_delete=CASCADE, default=DEFAULT_ID)
-    id_user = ForeignKey(User, on_delete=CASCADE, default=DEFAULT_ID)
+    id_habitation = ForeignKey(Habitation, on_delete=CASCADE)
+    id_user = ForeignKey(User, on_delete=CASCADE)
 
     def __str__(self):
         return "%s %s" % (self.id_habitation, self.id_user)
 
 class Media_habitation:
-    id_habitation = ForeignKey(Habitation, on_delete=CASCADE, default=DEFAULT_ID)
-    id_media = ForeignKey(Media, on_delete=CASCADE, default=DEFAULT_ID)
+    id_habitation = ForeignKey(Habitation, on_delete=CASCADE)
+    id_media = ManyToManyField(Media)
 
     def __str__(self):
         return "%s %s" % (self.id_habitation, self.id_media)
