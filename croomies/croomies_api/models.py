@@ -26,7 +26,7 @@ class Address(Model):
     def __str__(self):
         return "%s %s" % (self.city, self.address)
 
-class Habitation(Model):
+class Habitation(Model): #! TODO à faire proprement
     title = CharField(max_length=20)
     rooms_nb = IntegerField()
     area = IntegerField()
@@ -39,19 +39,19 @@ class Habitation(Model):
     def __str__(self):
         return "%s %s" % (self.title, self.description)
 
-class Sport(Model):
+class Sport(Model): #*DONE
     name = CharField(max_length=20)
 
     def __str__(self):
         return "%s" % (self.name)
 
-class Film(Model):
+class Film(Model): #*DONE
     name = CharField(max_length=20)
 
     def __str__(self):
         return "%s" % (self.name)
 
-class Music(Model):
+class Music(Model): #*DONE
     name = CharField(max_length=20)
 
     def __str__(self):
