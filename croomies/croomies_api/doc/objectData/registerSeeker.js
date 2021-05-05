@@ -37,5 +37,3 @@ const registerSeeker = {
         "numéro de telephone": 0
     }
 }
-
-

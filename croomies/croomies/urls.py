@@ -37,6 +37,4 @@ urlpatterns = [
     path('api/Sport', views.SportAPI.as_view(), name='Sport'),
     path('api/Film', views.FilmAPI.as_view(), name='Film'),
     path('api/Music', views.MusicAPI.as_view(), name='Music'),
-
-
 ]
