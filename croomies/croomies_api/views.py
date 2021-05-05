@@ -1,15 +1,18 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions
+from rest_framework.serializers import Serializer
 from .serializers import AddressSerializer
-from .models import Address, Habitation
+from .models import Address, Habitation, Sport, Film, Music
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, HabitationSerializer
+from .serializers import UserSerializer, RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
 from django.http import HttpResponse
 from django.core import serializers
+from rest_framework import status
+
 
 
 
@@ -68,3 +71,45 @@ class HabitationAPI(generics.GenericAPIView):
         habitation.save()
         print("post post")
         return HttpResponse("reeeee")
+
+class SportAPI(generics.GenericAPIView):
+    serializer_class = SportSerializer
+
+    def get(self, request, *args, **kwargs):
+        listSports = serializers.serialize("json", Sport.objects.all()),
+        return HttpResponse(listSports)
+
+    def post(self, request, *args, **kwargs):
+        serializer = SportSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class FilmAPI(generics.GenericAPIView):
+    serializer_class = FilmSerializer
+
+    def get(self, request, *args, **kwargs):
+        listFilms = serializers.serialize("json", Film.objects.all()),
+        return HttpResponse(listFilms)
+
+    def post(self, request, *args, **kwargs):
+        serializer = FilmSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MusicAPI(generics.GenericAPIView):
+    serializer_class = MusicSerializer
+
+    def get(self, request, *args, **kwargs):
+        listMusics = serializers.serialize("json", Music.objects.all()),
+        return HttpResponse(listMusics)
+
+    def post(self, request, *args, **kwargs):
+        serializer = MusicSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

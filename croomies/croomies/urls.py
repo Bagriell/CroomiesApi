@@ -34,4 +34,9 @@ urlpatterns = [
     path('api/logout/', knox_views.LogoutView.as_view(), name='logout'),
     path('api/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
     path('api/Habitation/', views.HabitationAPI.as_view(), name='Habitations'),
+    path('api/Sport', views.SportAPI.as_view(), name='Sport'),
+    path('api/Film', views.FilmAPI.as_view(), name='Film'),
+    path('api/Music', views.MusicAPI.as_view(), name='Music'),
+
+
 ]
