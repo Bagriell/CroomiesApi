@@ -1,5 +1,7 @@
 django-rest-knox
 djangorestframework
+gunicorn
+django-heroku
 Django
 psycopg2
 psycopg2-binary
