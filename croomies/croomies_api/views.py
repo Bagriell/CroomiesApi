@@ -2,10 +2,10 @@ from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions
 from rest_framework.serializers import Serializer
 from .serializers import AddressSerializer
-from .models import Address, Habitation, Sport, Film, Music
+from .models import Address, Habitation, Sport, Film, Music, Sport_user
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer
+from .serializers import UserSerializer,RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer, Sport_userSerializer
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
@@ -108,6 +108,20 @@ class MusicAPI(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = MusicSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Sport_userAPI(generics.GenericAPIView):
+    serializer_class = Sport_userSerializer
+
+    def get(self, request, *args, **kwargs):
+        listSport_user = serializers.serialize("json", Sport_user.objects.all()),
+        return HttpResponse(listSport_user)
+
+    def post(self, request, *args, **kwargs):
+        serializer = Sport_userSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
