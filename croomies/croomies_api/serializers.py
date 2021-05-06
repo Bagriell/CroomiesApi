@@ -1,6 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
-from .models import Address, Habitation, Music, Sport, Film
+from .models import Address, Habitation, Music, Sport, Film, Sport_user
 from django.contrib.auth.models import User
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -72,3 +72,8 @@ class MusicSerializer(serializers.ModelSerializer):
         model = Music
         fields = '__all__'
         name = serializers.CharField(max_length=200)
+
+class Sport_userSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sport_user
+        fields = ('id_sport', 'id_user')
