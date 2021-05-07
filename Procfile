@@ -1,1 +1,1 @@
-web: gunicorn croomies.wsgi
+web: gunicorn croomies.wsgi --log-file -

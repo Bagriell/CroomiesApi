@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 from os import environ
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -95,17 +96,21 @@ WSGI_APPLICATION = 'croomies.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'croomies_db',
-        'USER': 'croomies',
-        'PASSWORD': 'croomies',
-        'HOST': 'localhost',
-        'PORT': '5432',
-        'CONN_MAX_AGE': 500
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'croomies_db',
+#         'USER': 'croomies',
+#         'PASSWORD': 'croomies',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#         'CONN_MAX_AGE': 500
+#     }
+# }
+
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+
 
 
 # Password validation
@@ -147,5 +152,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'localhost',
+    '127.0.0.1'
 ]
