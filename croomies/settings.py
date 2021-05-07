@@ -26,7 +26,7 @@ SECRET_KEY = environ['DJANGO_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://croomies-api.herokuapp.com/']
+ALLOWED_HOSTS = ['https://croomies-api.herokuapp.com']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
@@ -151,6 +151,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CORS_ORIGIN_WHITELIST = [
-    '*',
-]
+# CORS_ORIGIN_WHITELIST = [
+#     'https://croomies-api.herokuapp.com',
+#     '172.18.0.1',
+#     'localhost'
+# ]
