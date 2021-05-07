@@ -152,5 +152,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ORIGIN_WHITELIST = [
-    'myapp.herokuapp.com',
+    'https://croomies-api.herokuapp.com',
 ]
