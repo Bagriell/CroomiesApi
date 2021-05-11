@@ -4,10 +4,13 @@ from django.db.models.deletion import CASCADE
 from django.db.models.fields import BooleanField, CharField, EmailField, FloatField, IntegerField, TextField, URLField
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 
-# Mindmap : https://www.mindmeister.com/fr/1814486318?t=YE8gxhCFsd
+#* Mindmap : https://www.mindmeister.com/fr/1814486318?t=YE8gxhCFsd
+#* Excel : https://docs.google.com/spreadsheets/d/1gWNZsbPm08ZI8Q9swAmLyaOUvMjZoWLdwzVbLjHXdkU/edit#gid=0
+
+#TODO Chantier: prevoir upload/photo/video/type de document != de doc officiels
+#TODO Label true pour Profil Picture
 
 
-# Chantier: prevoir upload/photo/video/type de document != de doc officiels
 class Media(Model):
     url = URLField()
     type_of = CharField(max_length=20)
@@ -25,7 +28,7 @@ class Address(Model):
     def __str__(self):
         return "%s %s" % (self.city, self.address)
 
-class Habitation(Model): #! TODO serializers / views à faire proprement
+class Habitation(Model):
     title = CharField(max_length=20)
     rooms_nb = IntegerField()
     area = IntegerField()
@@ -57,7 +60,7 @@ class Music(Model): #*DONE
     def __str__(self):
         return "%s" % (self.name)
 
-class User(Model):
+class CroomiesUser(Model):
     first_name = CharField(max_length=20)
     last_name = CharField(max_length=20)
     is_owner = BooleanField(default=False)
@@ -65,7 +68,7 @@ class User(Model):
     description = TextField()
     email = EmailField()
     password = CharField(max_length=20)
-    id_media = ForeignKey(Media, on_delete=CASCADE)
+    id_media = ForeignKey(Media, on_delete=CASCADE, blank=True, null=True)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
@@ -73,29 +76,29 @@ class User(Model):
 
 class Music_user(Model):
     id_music = ManyToManyField(Music)
-    id_user = ManyToManyField(User)
+    id_user = ManyToManyField(CroomiesUser)
 
     def __str__(self):
         return "%s %s" % (self.id_music, self.id_user)
 
 class Film_user(Model):
     id_film = ManyToManyField(Film)
-    id_user = ManyToManyField(User)
+    id_user = ManyToManyField(CroomiesUser)
 
     def __str__(self):
         return "%s %s" % (self.id_film, self.id_user)
 
 class Sport_user(Model):
     id_sport = ManyToManyField(Sport)
-    id_user = ManyToManyField(User)
+    id_user = ManyToManyField(CroomiesUser)
 
     def __str__(self):
         return "%s %s" % (self.id_sport, self.id_user)
 
 
 class Seeker(Model):
-    id_user = ForeignKey(User, on_delete=CASCADE)
-    id_adress_search = OneToOneField(Address, on_delete=CASCADE)
+    id_user = ForeignKey(CroomiesUser, on_delete=CASCADE)
+    id_adress_search = OneToOneField(Address, on_delete=CASCADE) #! Table address non adapté pour stocker les "recherches", à changer
     budget_min = IntegerField()
     budget_max = IntegerField()
 
@@ -109,7 +112,7 @@ class Seeker(Model):
         return "%s %s" % (self.id_user, self.id_localisation_search)
 
 class Matching(Model):
-    id_user = ForeignKey(User, on_delete=CASCADE)
+    id_user = ForeignKey(CroomiesUser, on_delete=CASCADE)
     id_seeker = ForeignKey(Seeker, on_delete=CASCADE)
     skip = BooleanField(default=False)
     like = BooleanField(default=False)
@@ -118,14 +121,14 @@ class Matching(Model):
         return "%s %s" % (self.id_matcher, self.id_seeker)
 
 
-class Roomate_in_habitation:
+class Roomate_in_habitation(Model):
     id_habitation = ForeignKey(Habitation, on_delete=CASCADE)
-    id_user = ForeignKey(User, on_delete=CASCADE)
+    id_user = ForeignKey(CroomiesUser, on_delete=CASCADE)
 
     def __str__(self):
         return "%s %s" % (self.id_habitation, self.id_user)
 
-class Media_habitation:
+class Media_habitation(Model):
     id_habitation = ForeignKey(Habitation, on_delete=CASCADE)
     id_media = ManyToManyField(Media)
 

@@ -2,10 +2,10 @@ from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions
 from rest_framework.serializers import Serializer
 from .serializers import AddressSerializer
-from .models import Address, Habitation, Sport, Film, Music, Sport_user
+from .models import Address, Habitation, Sport, Film, Music, Sport_user, Film_user, Music_user, Media, CroomiesUser, Seeker, Matching, Roomate_in_habitation, Media_habitation
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer,RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer, Sport_userSerializer
+from .serializers import UserSerializer,RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer, Sport_userSerializer, Film_userSerializer, Music_userSerializer, MediaSerializer, SeekerSerializer, MatchingSerializer, Roomate_in_habitationSerializer, Media_habitationSerializer, CroomiesUserSerializer
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
@@ -51,25 +51,11 @@ class HabitationAPI(generics.GenericAPIView):
         return HttpResponse(listHabitations)
 
     def post(self, request, *args, **kwargs):
-        address=Address.objects.create(
-            city="Paris",
-            country="Fronce",
-            address="rue bamboola",
-            postcode=223445
-        )
-        address.save()
-        habitation = Habitation.objects.create(
-            title=request.POST["title"],
-            area=request.POST["area"],
-            id_address= address,
-            rooms_nb=1,
-            compatibility_score=1.20,
-            is_furnished=True,
-            description="Moi c'est Manon, je suis étudiante en Communication de la Mode et une place se libère dans ma coloc sur les quais (quai victor augagneur). En ce qui me concerne, je suis quelqu'un de très joyeux et de facile à vivre")
-
-        habitation.save()
-        print("post post")
-        return HttpResponse("reeeee")
+        serializer = HabitationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SportAPI(generics.GenericAPIView):
     serializer_class = SportSerializer
@@ -117,11 +103,137 @@ class Sport_userAPI(generics.GenericAPIView):
     serializer_class = Sport_userSerializer
 
     def get(self, request, *args, **kwargs):
-        listSport_user = serializers.serialize("json", Sport_user.objects.all()),
-        return HttpResponse(listSport_user)
+        listSport_users = serializers.serialize("json", Sport_user.objects.all()),
+        return HttpResponse(listSport_users)
 
     def post(self, request, *args, **kwargs):
         serializer = Sport_userSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Film_userAPI(generics.GenericAPIView):
+    serializer_class = Film_userSerializer
+
+    def get(self, request, *args, **kwargs):
+        listFilm_users = serializers.serialize("json", Film_user.objects.all()),
+        return HttpResponse(listFilm_users)
+
+    def post(self, request, *args, **kwargs):
+        serializer = Film_userSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Music_userAPI(generics.GenericAPIView):
+    serializer_class = Music_userSerializer
+
+    def get(self, request, *args, **kwargs):
+        listMusic_users = serializers.serialize("json", Music_user.objects.all()),
+        return HttpResponse(listMusic_users)
+
+    def post(self, request, *args, **kwargs):
+        serializer = Music_userSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MediaAPI(generics.GenericAPIView):
+    serializer_class = MediaSerializer
+
+    def get(self, request, *args, **kwargs):
+        listMedias = serializers.serialize("json", Media.objects.all()),
+        return HttpResponse(listMedias)
+
+    def post(self, request, *args, **kwargs):
+        serializer = MediaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AddressAPI(generics.GenericAPIView):
+    serializer_class = AddressSerializer
+
+    def get(self, request, *args, **kwargs):
+        listAddress = serializers.serialize("json", Address.objects.all()),
+        return HttpResponse(listAddress)
+
+    def post(self, request, *args, **kwargs):
+        serializer = AddressSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CroomiesUserAPI(generics.GenericAPIView):
+    serializer_class = CroomiesUserSerializer
+
+    def get(self, request, *args, **kwargs):
+        listCroomiesUsers = serializers.serialize("json", CroomiesUser.objects.all()),
+        return HttpResponse(listCroomiesUsers)
+
+    def post(self, request, *args, **kwargs):
+        serializer = CroomiesUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SeekerAPI(generics.GenericAPIView):
+    serializer_class = SeekerSerializer
+
+    def get(self, request, *args, **kwargs):
+        listSeekers = serializers.serialize("json", Seeker.objects.all()),
+        return HttpResponse(listSeekers)
+
+    def post(self, request, *args, **kwargs):
+        serializer = SeekerSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class MatchingAPI(generics.GenericAPIView):
+    serializer_class = MatchingSerializer
+
+    def get(self, request, *args, **kwargs):
+        listMatchings = serializers.serialize("json", Matching.objects.all()),
+        return HttpResponse(listMatchings)
+
+    def post(self, request, *args, **kwargs):
+        serializer = MatchingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Roomate_in_habitationAPI(generics.GenericAPIView):
+    serializer_class = Roomate_in_habitationSerializer
+
+    def get(self, request, *args, **kwargs):
+        listRoomate_in_habitations = serializers.serialize("json", Roomate_in_habitation.objects.all()),
+        return HttpResponse(listRoomate_in_habitations)
+
+    def post(self, request, *args, **kwargs):
+        serializer = Roomate_in_habitationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Media_habitationAPI(generics.GenericAPIView):
+    serializer_class = Media_habitationSerializer
+
+    def get(self, request, *args, **kwargs):
+        listMedia_habitations = serializers.serialize("json", Media_habitation.objects.all()),
+        return HttpResponse(listMedia_habitations)
+
+    def post(self, request, *args, **kwargs):
+        serializer = Media_habitationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -108,7 +108,6 @@ WSGI_APPLICATION = 'croomies.wsgi.application'
 #         'CONN_MAX_AGE': 500
 #     }
 # }
-
 DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 

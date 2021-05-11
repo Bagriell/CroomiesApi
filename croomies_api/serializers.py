@@ -1,6 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
-from .models import Address, Habitation, Music, Sport, Film, Sport_user
+from .models import Address, Habitation, Media, Music, Sport, Film, Sport_user, Film_user, Music_user, CroomiesUser, Seeker, Matching, Roomate_in_habitation, Media_habitation
 from django.contrib.auth.models import User
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -29,31 +29,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class HabitationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Habitation
-        fields = ('title', 'area', 'description')
-
-    def create(self):
-        habitation = Habitation.objects.create(
-            title=['Neverland'],
-            area=['67'],
-            description=["Moi c'est Manon, je suis étudiante en Communication de la Mode et une place se libère dans ma coloc sur les quais (quai victor augagneur). En ce qui me concerne, je suis quelqu'un de très joyeux et de facile à vivre"])
-
-        habitation.save()
-
-        habitation = Habitation.objects.create(
-            title=['Coloc des Lumières'],
-            area=['150'],
-            description=["Nous postons une annonce car nous cherchons quelqu'un.e à partir de début Juin et pour la durée que tu souhaites, l'idée est tout de même rester au moins 1 an si possible. De plus, nous aurions une préférence pour une personne déjà dans la vie active."])
-
-        habitation.save()
-
-        habitation = Habitation.objects.create(
-            title=["L'octogone"],
-            area=['50'],
-            description=["Jeune infirmière recherche un ou une coloc pour remplacer ma colocataire actuelle qui retourne dans sa ville natale ! Je recherche un profil soigneux (Hygiène douteuse s'abstenir :p ) mais aussi quelqu'un de sympathique pour apprécier les moments de convivialité et qui gravite autour des 25 ans et plus (critère non éliminatoire) ! :p"])
-
-        habitation.save()
-
-        return habitation
+        fields = ('title', 'rooms_nb', 'area', 'id_address', 'description', 'compatibility_score', 'is_furnished', 'price')
 
 class SportSerializer(serializers.ModelSerializer):
     class Meta:
@@ -77,3 +53,43 @@ class Sport_userSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sport_user
         fields = ('id_sport', 'id_user')
+
+class Film_userSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Film_user
+        fields = ('id_film', 'id_user')
+
+class Music_userSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Music_user
+        fields = ('id_music', 'id_user')
+
+class MediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Media
+        fields = ('url', 'type_of')
+
+class CroomiesUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CroomiesUser
+        fields = ('first_name', 'last_name', 'is_owner', 'is_seeker', 'description', 'email', 'password', 'id_media')
+
+class SeekerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seeker
+        fields = ('id_user', 'id_adress_search', 'budget_min', 'budget_max', 'response_one', 'response_two', 'response_three', 'response_four', 'response_five')
+
+class MatchingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Matching
+        fields = ('id_user', 'id_seeker', 'skip', 'like')
+
+class Roomate_in_habitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Roomate_in_habitation
+        fields = ('id_habitation', 'id_user')
+
+class Media_habitationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Media_habitation
+        fields = ('id_habitation', 'id_media')

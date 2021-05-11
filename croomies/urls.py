@@ -37,5 +37,14 @@ urlpatterns = [
     path('api/Sport/', views.SportAPI.as_view(), name='Sport'),
     path('api/Film/', views.FilmAPI.as_view(), name='Film'),
     path('api/Music/', views.MusicAPI.as_view(), name='Music'),
-    path('api/Sport_user/', views.Sport_userAPI.as_view(), name='Sport_user')
+    path('api/Sport_user/', views.Sport_userAPI.as_view(), name='Sport_user'),
+    path('api/Film_user/', views.Film_userAPI.as_view(), name='Film_user'),
+    path('api/Music_user/', views.Music_userAPI.as_view(), name='Music_user'),
+    path('api/Media/', views.MediaAPI.as_view(), name='Media'),
+    path('api/Address/', views.AddressAPI.as_view(), name='Address'),
+    path('api/CroomiesUser/', views.CroomiesUserAPI.as_view(), name='CroomiesUser'),
+    path('api/Seeker/', views.SeekerAPI.as_view(), name='Seeker'),
+    path('api/Matching/', views.MatchingAPI.as_view(), name='Matching'),
+    path('api/Roomate_in_habitation/', views.Roomate_in_habitationAPI.as_view(), name='Roomate_in_habitation'),
+    path('api/Media_habitation/', views.Media_habitationAPI.as_view(), name='Media_habitation'),
 ]
