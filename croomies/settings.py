@@ -17,6 +17,7 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -26,7 +27,7 @@ SECRET_KEY = environ['DJANGO_SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://croomies-api.herokuapp.com']
+ALLOWED_HOSTS = ['https://croomies-api.herokuapp.com/']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
