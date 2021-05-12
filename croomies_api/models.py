@@ -32,7 +32,7 @@ class Habitation(Model):
     title = CharField(max_length=20)
     rooms_nb = IntegerField()
     area = IntegerField()
-    id_address = OneToOneField(Address, on_delete=CASCADE)    # Shop-django / Django-address package
+    id_address = OneToOneField(Address, on_delete=CASCADE, blank=True, null=True)    # Shop-django / Django-address package
     description = TextField()
     compatibility_score = FloatField()
     is_furnished = BooleanField()
