@@ -1,1 +1,1 @@
-web: gunicorn croomies.wsgi  --settings=croomies.settings.development
+web: gunicorn croomies.wsgi  --log-file -
