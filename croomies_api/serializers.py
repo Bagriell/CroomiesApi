@@ -1,6 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
-from .models import Address, Habitation, Media, Music, Sport, Film, Sport_user, Film_user, Music_user, CroomiesUser, Seeker, Matching, Roomate_in_habitation, Media_habitation
+from .models import Address, Habitation, Media, Music, Sport, Film, Sport_user, Film_user, Music_user, CroomiesUser, Seeker, Matching, Roomate_in_habitation, Media_habitation, Time_slots, Date_slots, Visite, Application
 from django.contrib.auth.models import User
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class HabitationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Habitation
-        fields = ('title', 'rooms_nb', 'area', 'id_address', 'description', 'compatibility_score', 'is_furnished', 'price')
+        fields = ('title', 'rooms_nb', 'area', 'id_address', 'description', 'compatibility_score', 'is_furnished', 'price', 'id_user_poster', 'id_time_slots', 'id_date_slots')
 
 class SportSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,7 +72,7 @@ class MediaSerializer(serializers.ModelSerializer):
 class CroomiesUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CroomiesUser
-        fields = ('first_name', 'last_name', 'is_owner', 'is_seeker', 'description', 'email', 'password', 'id_media')
+        fields = ('first_name', 'last_name', 'is_owner', 'is_seeker', 'description', 'email', 'password','is_media', 'id_media', 'identity_card', 'student_card', 'proof_address_self', 'proof_address_guarantor', 'identity_card_guarantor', 'proof_income_self', 'proof_income_guarantor', 'tax_notice_self', 'tax_notice_guarantor', 'property_tax_guarantor', 'apl_certificate')
 
 class SeekerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -93,3 +93,23 @@ class Media_habitationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Media_habitation
         fields = ('id_habitation', 'id_media')
+
+class Time_slotsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Time_slots
+        fields = '__all__'
+
+class Date_slotsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Date_slots
+        fields = '__all__'
+
+class VisiteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Visite
+        fields = ('state', 'id_habitation', 'date', 'hour', 'id_seeker')
+
+class ApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Application
+        fields = ('id_habitation', 'id_user', 'message')

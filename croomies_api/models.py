@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import Model
 from django.db.models.deletion import CASCADE
-from django.db.models.fields import BooleanField, CharField, EmailField, FloatField, IntegerField, TextField, URLField
+from django.db.models.fields import BooleanField, CharField, EmailField, FloatField, IntegerField, TextField, URLField, DateField, TimeField
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from knox.models import User
 
@@ -19,6 +19,30 @@ class Media(Model):
     def __str__(self):
         return "%s" % (self.url)
 
+class CroomiesUser(Model):
+    first_name = CharField(max_length=20)
+    last_name = CharField(max_length=20)
+    is_owner = BooleanField(default=False)
+    is_seeker = BooleanField(default=False)
+    description = TextField()
+    email = EmailField()
+    password = CharField(max_length=20)
+    is_media = BooleanField(default=False)
+    id_media = ForeignKey(Media, on_delete=CASCADE, blank=True, null=True)
+    identity_card = URLField(blank=True, null=True)
+    student_card = URLField(blank=True, null=True)
+    proof_address_self = URLField(blank=True, null=True)
+    proof_address_guarantor = URLField(blank=True, null=True)
+    identity_card_guarantor = URLField(blank=True, null=True)
+    proof_income_self = URLField(blank=True, null=True)
+    proof_income_guarantor = URLField(blank=True, null=True)
+    tax_notice_self = URLField(blank=True, null=True)
+    tax_notice_guarantor = URLField(blank=True, null=True)
+    property_tax_guarantor = URLField(blank=True, null=True)
+    apl_certificate = URLField(blank=True, null=True)
+
+    def __str__(self):
+        return "%s %s" % (self.first_name, self.last_name)
 
 class Address(Model):
     city = CharField(max_length=20)
@@ -29,6 +53,12 @@ class Address(Model):
     def __str__(self):
         return "%s %s" % (self.city, self.address)
 
+class Time_slots(Model):
+    hour = TimeField()
+
+class Date_slots(Model):
+    date = DateField()
+
 class Habitation(Model):
     title = CharField(max_length=20)
     rooms_nb = IntegerField()
@@ -38,38 +68,34 @@ class Habitation(Model):
     compatibility_score = FloatField()
     is_furnished = BooleanField()
     price = IntegerField()
+<<<<<<< HEAD
     # owner = OneToOneField(CroomiesUser)
+=======
+    id_user_poster = ForeignKey(CroomiesUser, on_delete=CASCADE, blank=True, null=True) #il s'agit du gars qui met l'annonce #! remove blank=true et null=true
+    id_time_slots = ForeignKey(Time_slots, on_delete=CASCADE, blank=True, null=True)
+    id_date_slots =  ForeignKey(Date_slots, on_delete=CASCADE, blank=True, null=True)
+>>>>>>> 2b73cab187b5ae5d2400baa5024482c99f5488b2
 
     def __str__(self):
         return "%s %s" % (self.title, self.description)
 
-class Sport(Model): #*DONE
+class Sport(Model):
     name = CharField(max_length=20)
 
     def __str__(self):
         return "%s" % (self.name)
 
-class Film(Model): #*DONE
+class Film(Model):
     name = CharField(max_length=20)
 
     def __str__(self):
         return "%s" % (self.name)
 
-class Music(Model): #*DONE
+class Music(Model):
     name = CharField(max_length=20)
 
     def __str__(self):
         return "%s" % (self.name)
-
-class CroomiesUser(Model):
-    first_name = CharField(max_length=20)
-    last_name = CharField(max_length=20)
-    is_owner = BooleanField(default=False)
-    is_seeker = BooleanField(default=False)
-    description = TextField()
-    email = EmailField()
-    password = CharField(max_length=20)
-    id_media = ForeignKey(Media, on_delete=CASCADE, blank=True, null=True)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
@@ -135,3 +161,15 @@ class Media_habitation(Model):
 
     def __str__(self):
         return "%s %s" % (self.id_habitation, self.id_media)
+
+class Visite(Model):
+    state = BooleanField(default=False)
+    id_habitation = ForeignKey(Habitation, on_delete=CASCADE) #id_logement
+    date = DateField()
+    hour = TimeField()
+    id_seeker = ForeignKey(Seeker, on_delete=CASCADE)
+
+class Application(Model):
+    id_habitation = ForeignKey(Habitation, on_delete=CASCADE)
+    id_user = ForeignKey(CroomiesUser, on_delete=CASCADE)
+    message = TextField()

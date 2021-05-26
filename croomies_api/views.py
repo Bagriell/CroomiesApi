@@ -2,10 +2,10 @@ from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions
 from rest_framework.serializers import Serializer
 from .serializers import AddressSerializer
-from .models import Address, Habitation, Sport, Film, Music, Sport_user, Film_user, Music_user, Media, CroomiesUser, Seeker, Matching, Roomate_in_habitation, Media_habitation
+from .models import Address, Habitation, Sport, Film, Music, Sport_user, Film_user, Music_user, Media, CroomiesUser, Seeker, Matching, Roomate_in_habitation, Media_habitation, Time_slots, Date_slots, Visite, Application
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer,RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer, Sport_userSerializer, Film_userSerializer, Music_userSerializer, MediaSerializer, SeekerSerializer, MatchingSerializer, Roomate_in_habitationSerializer, Media_habitationSerializer, CroomiesUserSerializer
+from .serializers import UserSerializer,RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer, Sport_userSerializer, Film_userSerializer, Music_userSerializer, MediaSerializer, SeekerSerializer, MatchingSerializer, Roomate_in_habitationSerializer, Media_habitationSerializer, CroomiesUserSerializer, Time_slotsSerializer, Date_slotsSerializer, VisiteSerializer, ApplicationSerializer
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
@@ -234,6 +234,62 @@ class Media_habitationAPI(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         serializer = Media_habitationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Time_slotsAPI(generics.GenericAPIView):
+    serializer_class = Time_slotsSerializer
+
+    #def get(self, request, *args, **kwargs):
+    #    listTime_slots = serializers.serialize("json", Time_slots.objects.all()),
+    #    return HttpResponse(listTime_slots)
+
+    def post(self, request, *args, **kwargs):
+        serializer = Time_slotsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Date_slotsAPI(generics.GenericAPIView):
+    serializer_class = Date_slotsSerializer
+
+    def get(self, request, *args, **kwargs):
+        listDate_slots = serializers.serialize("json", Date_slots.objects.all()),
+        return HttpResponse(listDate_slots)
+
+    def post(self, request, *args, **kwargs):
+        serializer = Date_slotsSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class VisiteAPI(generics.GenericAPIView):
+    serializer_class = VisiteSerializer
+
+    def get(self, request, *args, **kwargs):
+        listVisites = serializers.serialize("json", Visite.objects.all()),
+        return HttpResponse(listVisites)
+
+    def post(self, request, *args, **kwargs):
+        serializer = VisiteSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ApplicationAPI(generics.GenericAPIView):
+    serializer_class = ApplicationSerializer
+
+    def get(self, request, *args, **kwargs):
+        listApplications = serializers.serialize("json", Application.objects.all()),
+        return HttpResponse(listApplications)
+
+    def post(self, request, *args, **kwargs):
+        serializer = ApplicationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

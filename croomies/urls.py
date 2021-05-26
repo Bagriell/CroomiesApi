@@ -47,4 +47,9 @@ urlpatterns = [
     path('api/Matching/', views.MatchingAPI.as_view(), name='Matching'),
     path('api/Roomate_in_habitation/', views.Roomate_in_habitationAPI.as_view(), name='Roomate_in_habitation'),
     path('api/Media_habitation/', views.Media_habitationAPI.as_view(), name='Media_habitation'),
+    path('api/Time_slots/', views.Time_slotsAPI.as_view(), name='Time_slots'),
+    path('api/Date_slots/', views.Date_slotsAPI.as_view(), name='Date_slots'),
+    path('api/Visite/', views.VisiteAPI.as_view(), name='Visite'),
+    path('api/Application/', views.ApplicationAPI.as_view(), name='Application')
+
 ]
