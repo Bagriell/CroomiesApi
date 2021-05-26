@@ -40,6 +40,8 @@ class CroomiesUser(Model):
     tax_notice_guarantor = URLField(blank=True, null=True)
     property_tax_guarantor = URLField(blank=True, null=True)
     apl_certificate = URLField(blank=True, null=True)
+    nbr_rooms = IntegerField()
+    is_whole_habitation = BooleanField(default=False)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
