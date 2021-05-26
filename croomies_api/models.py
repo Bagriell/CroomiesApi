@@ -68,13 +68,9 @@ class Habitation(Model):
     compatibility_score = FloatField()
     is_furnished = BooleanField()
     price = IntegerField()
-<<<<<<< HEAD
-    # owner = OneToOneField(CroomiesUser)
-=======
     id_user_poster = ForeignKey(CroomiesUser, on_delete=CASCADE, blank=True, null=True) #il s'agit du gars qui met l'annonce #! remove blank=true et null=true
     id_time_slots = ForeignKey(Time_slots, on_delete=CASCADE, blank=True, null=True)
     id_date_slots =  ForeignKey(Date_slots, on_delete=CASCADE, blank=True, null=True)
->>>>>>> 2b73cab187b5ae5d2400baa5024482c99f5488b2
 
     def __str__(self):
         return "%s %s" % (self.title, self.description)
