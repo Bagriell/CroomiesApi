@@ -3,6 +3,7 @@ from django.db.models import Model
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import BooleanField, CharField, EmailField, FloatField, IntegerField, TextField, URLField
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
+from knox.models import User
 
 #* Mindmap : https://www.mindmeister.com/fr/1814486318?t=YE8gxhCFsd
 #* Excel : https://docs.google.com/spreadsheets/d/1gWNZsbPm08ZI8Q9swAmLyaOUvMjZoWLdwzVbLjHXdkU/edit#gid=0
@@ -37,7 +38,7 @@ class Habitation(Model):
     compatibility_score = FloatField()
     is_furnished = BooleanField()
     price = IntegerField()
-
+    # owner = OneToOneField(CroomiesUser)
 
     def __str__(self):
         return "%s %s" % (self.title, self.description)
