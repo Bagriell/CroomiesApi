@@ -14,10 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from croomies_api.views.views_utils import colocation_seekerAPI
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from croomies_api import views
+from croomies_api.views import views
 from knox import views as knox_views
 
 
@@ -42,7 +43,7 @@ urlpatterns = [
     path('api/music_user/', views.Music_userAPI.as_view(), name='Music_user'),
     path('api/media/', views.MediaAPI.as_view(), name='Media'),
     path('api/address/', views.AddressAPI.as_view(), name='Address'),
-    path('api/croomiesUser/', views.CroomiesUserAPI.as_view(), name='CroomiesUser'),
+    path('api/croomiesuser/', views.CroomiesUserAPI.as_view(), name='CroomiesUser'),
     path('api/seeker/', views.SeekerAPI.as_view(), name='Seeker'),
     path('api/matching/', views.MatchingAPI.as_view(), name='Matching'),
     path('api/roomate_in_habitation/', views.Roomate_in_habitationAPI.as_view(), name='Roomate_in_habitation'),
@@ -50,5 +51,6 @@ urlpatterns = [
     path('api/time_slots/', views.Time_slotsAPI.as_view(), name='Time_slots'),
     path('api/date_slots/', views.Date_slotsAPI.as_view(), name='Date_slots'),
     path('api/visite/', views.VisiteAPI.as_view(), name='Visite'),
-    path('api/application/', views.ApplicationAPI.as_view(), name='Application')
+    path('api/application/', views.ApplicationAPI.as_view(), name='Application'),
+    path('api/colocation_seeker/', views.colocation_seekerAPI.as_view(), name='colocation_seeker')
 ]

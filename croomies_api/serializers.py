@@ -72,12 +72,12 @@ class MediaSerializer(serializers.ModelSerializer):
 class CroomiesUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CroomiesUser
-        fields = ('first_name', 'last_name', 'is_owner', 'is_seeker', 'description', 'email', 'password','is_media', 'id_media', 'identity_card', 'student_card', 'proof_address_self', 'proof_address_guarantor', 'identity_card_guarantor', 'proof_income_self', 'proof_income_guarantor', 'tax_notice_self', 'tax_notice_guarantor', 'property_tax_guarantor', 'apl_certificate', 'nbr_rooms', 'is_whole_habitation')
+        fields = ('first_name', 'last_name', 'is_owner', 'is_seeker', 'description', 'email', 'password','is_media', 'id_media', 'identity_card', 'student_card', 'proof_address_self', 'proof_address_guarantor', 'identity_card_guarantor', 'proof_income_self', 'proof_income_guarantor', 'tax_notice_self', 'tax_notice_guarantor', 'property_tax_guarantor', 'apl_certificate', 'nbr_rooms', 'is_whole_habitation', 'age', 'activity', 'gender', 'phone_number', 'diet', 'drinks', 'drugs', 'education', 'pets', 'speaks', 'religion', 'smokes')
 
 class SeekerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Seeker
-        fields = ('id_user', 'id_adress_search', 'budget_min', 'budget_max', 'response_one', 'response_two', 'response_three', 'response_four', 'response_five')
+        fields = ('id_user', 'id_adress_search', 'budget_min', 'budget_max', 'number_of_room', 'is_empty_habitation', 'searching_from', 'searching_to', 'where_city', 'where_country', 'where_address', 'where_postcode')
 
 class MatchingSerializer(serializers.ModelSerializer):
     class Meta:

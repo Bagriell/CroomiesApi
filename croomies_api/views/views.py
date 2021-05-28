@@ -1,23 +1,22 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions
 from rest_framework.serializers import Serializer
-from .serializers import AddressSerializer
-from .models import Address, Habitation, Sport, Film, Music, Sport_user, Film_user, Music_user, Media, CroomiesUser, Seeker, Matching, Roomate_in_habitation, Media_habitation, Time_slots, Date_slots, Visite, Application
+from ..serializers import AddressSerializer
+from ..models import Address, Habitation, Sport, Film, Music, Sport_user, Film_user, Music_user, Media, CroomiesUser, Seeker, Matching, Roomate_in_habitation, Media_habitation, Time_slots, Date_slots, Visite, Application
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer,RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer, Sport_userSerializer, Film_userSerializer, Music_userSerializer, MediaSerializer, SeekerSerializer, MatchingSerializer, Roomate_in_habitationSerializer, Media_habitationSerializer, CroomiesUserSerializer, Time_slotsSerializer, Date_slotsSerializer, VisiteSerializer, ApplicationSerializer
+from ..serializers import UserSerializer,RegisterSerializer, HabitationSerializer, SportSerializer, FilmSerializer, MusicSerializer, Sport_userSerializer, Film_userSerializer, Music_userSerializer, MediaSerializer, SeekerSerializer, MatchingSerializer, Roomate_in_habitationSerializer, Media_habitationSerializer, CroomiesUserSerializer, Time_slotsSerializer, Date_slotsSerializer, VisiteSerializer, ApplicationSerializer
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
 from django.http import HttpResponse
 from django.core import serializers
 from rest_framework import status
-
+from .views_utils import *
 
 class AddressView(viewsets.ModelViewSet):
     serializer_class = AddressSerializer
     queryset = Address.objects.all()
-
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -294,3 +293,4 @@ class ApplicationAPI(generics.GenericAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

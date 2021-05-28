@@ -4,12 +4,16 @@ from django.db.models.deletion import CASCADE
 from django.db.models.fields import BooleanField, CharField, EmailField, FloatField, IntegerField, TextField, URLField, DateField, TimeField
 from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
 from knox.models import User
+from datetime import date
+
 
 #* Mindmap : https://www.mindmeister.com/fr/1814486318?t=YE8gxhCFsd
 #* Excel : https://docs.google.com/spreadsheets/d/1gWNZsbPm08ZI8Q9swAmLyaOUvMjZoWLdwzVbLjHXdkU/edit#gid=0
 
 #TODO Chantier: prevoir upload/photo/video/type de document != de doc officiels
 #TODO Label true pour Profil Picture
+
+date = models.DateTimeField(auto_now_add=True, blank=True)
 
 
 class Media(Model):
@@ -40,8 +44,20 @@ class CroomiesUser(Model):
     tax_notice_guarantor = URLField(blank=True, null=True)
     property_tax_guarantor = URLField(blank=True, null=True)
     apl_certificate = URLField(blank=True, null=True)
-    nbr_rooms = IntegerField()
+    nbr_rooms = IntegerField(blank=True, null=True)
     is_whole_habitation = BooleanField(default=False)
+    age = IntegerField(blank=True, null=True)
+    activity = CharField(max_length=100, blank=True, null=True)
+    gender = CharField(max_length=100, blank=True, null=True)
+    phone_number = CharField(max_length=20, blank=True, null=True)
+    diet = CharField(max_length=100, blank=True, null=True)
+    drinks = CharField(max_length=100, blank=True, null=True)
+    drugs = CharField(max_length=100, blank=True, null=True)
+    education = CharField(max_length=100, blank=True, null=True)
+    pets = CharField(max_length=100, blank=True, null=True)
+    speaks = CharField(max_length=100, blank=True, null=True)
+    religion = CharField(max_length=100, blank=True, null=True)
+    smokes = CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return "%s %s" % (self.first_name, self.last_name)
@@ -122,16 +138,19 @@ class Sport_user(Model):
 
 
 class Seeker(Model):
-    id_user = ForeignKey(CroomiesUser, on_delete=CASCADE)
-    id_adress_search = OneToOneField(Address, on_delete=CASCADE) #! Table address non adapté pour stocker les "recherches", à changer
-    budget_min = IntegerField()
-    budget_max = IntegerField()
+    id_user = ForeignKey(CroomiesUser, on_delete=CASCADE, blank=True, null=True)
+    id_adress_search = OneToOneField(Address, on_delete=CASCADE, blank=True, null=True)
+    budget_min = IntegerField(blank=True, null=True)
+    budget_max = IntegerField(blank=True, null=True)
+    number_of_room = IntegerField(blank=True, null=True)
+    is_empty_habitation = BooleanField(default= False)
+    searching_from = DateField(blank=True, null=True)
+    searching_to = DateField(blank=True, null=True)
+    where_city = CharField(max_length=20, blank=True, null=True)
+    where_country = CharField(max_length=20, blank=True, null=True)
+    where_address = TextField(blank=True, null=True)  # A modifier
+    where_postcode = IntegerField(blank=True, null=True)
 
-    response_one = FloatField()
-    response_two = FloatField()
-    response_three = FloatField()
-    response_four = FloatField()
-    response_five = FloatField()
 
     def __str__(self):
         return "%s %s" % (self.id_user, self.id_localisation_search)
