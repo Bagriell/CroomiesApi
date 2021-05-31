@@ -27,7 +27,7 @@ class colocation_seekerAPI(generics.GenericAPIView):
         addressSplitted = data["data"]["address"]["city"].split(",")
         #print(addressSplitted[1]) #city + postcode
         postcode = [int(i) for i in addressSplitted[1].split() if i.isdigit()]
-        city = ''.join([i for i in addressSplitted[1] if not i.isdigit()])
+        city = ''.join([j for j in addressSplitted[1] if not j.isdigit()])
         country= "France" #en dur pour le moment
         street= addressSplitted[0]
         #dateBegin = datetime.datetime.strptime(data["data"]["date"]["begin"], "%d/%m/%Y").strftime("%Y-%m-%d")
