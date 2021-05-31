@@ -52,5 +52,5 @@ urlpatterns = [
     path('api/date_slots/', views.Date_slotsAPI.as_view(), name='Date_slots'),
     path('api/visite/', views.VisiteAPI.as_view(), name='Visite'),
     path('api/application/', views.ApplicationAPI.as_view(), name='Application'),
-    path('api/colocation_seeker/', views.colocation_seekerAPI.as_view(), name='colocation_seeker')
+    path('api/register_seeker/', views.colocation_seekerAPI.as_view(), name='colocation_seeker')
 ]

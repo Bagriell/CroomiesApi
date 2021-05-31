@@ -11,6 +11,8 @@ from knox.views import LoginView as KnoxLoginView
 from django.http import HttpResponse
 from django.core import serializers
 from rest_framework import status
+import json
+import datetime
 
 class colocation_seekerAPI(generics.GenericAPIView):
 
@@ -19,10 +21,47 @@ class colocation_seekerAPI(generics.GenericAPIView):
         return HttpResponse(listMatchings)
 
     def post(self, request, *args, **kwargs):
-        try:
-            CroomiesUser.objects.create(first_name=request.data["first_name"], last_name=request.data["last_name"], password=request.data["password"], age=request.data["profile"]["age"], activity=request.data["profile"]["activity"], gender=request.data["profile"]["gender"], phone_number=request.data["profile"]["phone_number"], diet=request.data["answers"]["diet"], drinks=request.data["answers"]["drinks"], drugs=request.data["answers"]["drugs"], education=request.data["answers"]["education"], pets=request.data["answers"]["pets"], speaks=request.data["answers"]["speaks"], religion=request.data["answers"]["religion"], smokes=request.data["answers"]["smokes"])
-            Address.objects.create(city=request.data["address"]["city"], country=request.data["address"]["country"], address=request.data["address"]["street"], postcode=request.data["address"]["postcode"])
-            Seeker.objects.create(id_user= CroomiesUser.objects.get(first_name= request.data["first_name"], last_name=request.data["last_name"], password= request.data["password"]), budget_min= request.data["budget"]["min"], budget_max= request.data["budget"]["max"], number_of_room= request.data["numberSeeker"]["numberOfRoom"], is_empty_habitation= request.data["numberSeeker"]["emptyHabitation"], searching_from= request.data["date"]["begin"], searching_to= request.data["date"]["end"])
-            return Response("Created", status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response("Error" , status=status.HTTP_400_BAD_REQUEST)
+
+        data = json.loads(request.body)
+
+        addressSplitted = data["data"]["address"]["city"].split(",")
+        #print(addressSplitted[1]) #city + postcode
+        postcode = [int(i) for i in addressSplitted[1].split() if i.isdigit()]
+        city = ''.join([i for i in addressSplitted[1] if not i.isdigit()])
+        country= "France" #en dur pour le moment
+        street= addressSplitted[0]
+        #dateBegin = datetime.datetime.strptime(data["data"]["date"]["begin"], "%d/%m/%Y").strftime("%Y-%m-%d")
+        #print(dateBegin)
+
+        #* add password rules ?
+
+        isValidDateBegin = True
+        month,day,year = data["data"]["date"]["begin"].split('/')# format du front MM/DD/YYYY
+        try :
+            datetime.datetime(int(year),int(month),int(day))
+        except ValueError :
+            isValidDateBegin = False
+
+        if(isValidDateBegin == False) :
+            print ("Input Begining date is not valid..")
+            return Response("Input Begining date is not valid.." , status=status.HTTP_400_BAD_REQUEST)
+
+        new_case_dateYYYYMMDDbegin = year+"-"+month+"-"+day
+
+        isValidDateEnd = True
+        month,day,year = data["data"]["date"]["end"].split('/')
+        try :
+            datetime.datetime(int(year),int(month),int(day))
+        except ValueError :
+            isValidDateEnd = False
+
+        if(isValidDateEnd == False) :
+            print ("Input ending date is not valid..")
+            return Response("Input Ending date is not valid.." , status=status.HTTP_400_BAD_REQUEST)
+
+        new_case_dateYYYYMMDDend = year+"-"+month+"-"+day
+
+        CroomiesUser.objects.create(first_name=data["data"]["first_name"], last_name=data["data"]["last_name"], password=data["data"]["password"], age=data["data"]["profile"]["age"], activity=data["data"]["profile"]["activity"], gender=data["data"]["profile"]["gender"], phone_number=data["data"]["profile"]["phone_number"], diet=data["data"]["answers"]["diet"], drinks=data["data"]["answers"]["drinks"], drugs=data["data"]["answers"]["drugs"], education=data["data"]["answers"]["education"], pets=data["data"]["answers"]["pets"], speaks=data["data"]["answers"]["speaks"], religion=data["data"]["answers"]["religion"], smokes=data["data"]["answers"]["smokes"])
+        Address.objects.create(city=city, country=country, address=street, postcode=postcode[0])
+        Seeker.objects.create(id_user= CroomiesUser.objects.get(first_name= data["data"]["first_name"], last_name=data["data"]["last_name"], password= data["data"]["password"]), budget_min= data["data"]["budget"]["min"], budget_max= data["data"]["budget"]["max"], number_of_room= data["data"]["numberSeeker"]["numberOfRoom"], is_empty_habitation= data["data"]["numberSeeker"]["emptyHabitation"], searching_from= new_case_dateYYYYMMDDbegin, searching_to= new_case_dateYYYYMMDDend)
+        return Response("Created", status=status.HTTP_201_CREATED)

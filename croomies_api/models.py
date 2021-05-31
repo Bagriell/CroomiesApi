@@ -65,8 +65,8 @@ class CroomiesUser(Model):
 class Address(Model):
     city = CharField(max_length=20)
     country = CharField(max_length=20)
-    address = TextField()  # A modifier
-    postcode = IntegerField()
+    address = TextField(blank=True, null=True)  # A modifier
+    postcode = IntegerField(blank=True, null=True)
 
     def __str__(self):
         return "%s %s" % (self.city, self.address)
