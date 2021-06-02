@@ -24,12 +24,12 @@ class colocation_seekerAPI(generics.GenericAPIView):
 
         data = json.loads(request.body)
 
-        addressSplitted = data["data"]["address"]["city"].split(",")
+        #addressSplitted = data["data"]["address"]["city"].split(",")
         #print(addressSplitted[1]) #city + postcode
-        postcode = [int(i) for i in addressSplitted[1].split() if i.isdigit()]
-        city = ''.join([j for j in addressSplitted[1] if not j.isdigit()])
-        country= "France" #en dur pour le moment
-        street= addressSplitted[0]
+        #postcode = [int(i) for i in addressSplitted[1].split() if i.isdigit()]
+        #city = ''.join([j for j in addressSplitted[1] if not j.isdigit()])
+        #country= "France" #en dur pour le moment
+        #street= addressSplitted[0]
         #dateBegin = datetime.datetime.strptime(data["data"]["date"]["begin"], "%d/%m/%Y").strftime("%Y-%m-%d")
         #print(dateBegin)
 
@@ -62,6 +62,6 @@ class colocation_seekerAPI(generics.GenericAPIView):
         new_case_dateYYYYMMDDend = year+"-"+month+"-"+day
 
         CroomiesUser.objects.create(first_name=data["data"]["first_name"], last_name=data["data"]["last_name"], password=data["data"]["password"], age=data["data"]["profile"]["age"], activity=data["data"]["profile"]["activity"], gender=data["data"]["profile"]["gender"], phone_number=data["data"]["profile"]["phone_number"], diet=data["data"]["answers"]["diet"], drinks=data["data"]["answers"]["drinks"], drugs=data["data"]["answers"]["drugs"], education=data["data"]["answers"]["education"], pets=data["data"]["answers"]["pets"], speaks=data["data"]["answers"]["speaks"], religion=data["data"]["answers"]["religion"], smokes=data["data"]["answers"]["smokes"])
-        Address.objects.create(city=city, country=country, address=street, postcode=postcode[0])
+        Address.objects.create(city=data["data"]["address"]["city"], country=data["data"]["address"]["country"], address=data["data"]["address"]["street"], postcode=data["data"]["address"]["postcode"])
         Seeker.objects.create(id_user= CroomiesUser.objects.get(first_name= data["data"]["first_name"], last_name=data["data"]["last_name"], password= data["data"]["password"]), budget_min= data["data"]["budget"]["min"], budget_max= data["data"]["budget"]["max"], number_of_room= data["data"]["numberSeeker"]["numberOfRoom"], is_empty_habitation= data["data"]["numberSeeker"]["emptyHabitation"], searching_from= new_case_dateYYYYMMDDbegin, searching_to= new_case_dateYYYYMMDDend)
         return Response("Created", status=status.HTTP_201_CREATED)

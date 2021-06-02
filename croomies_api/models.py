@@ -11,7 +11,6 @@ from datetime import date
 #* Excel : https://docs.google.com/spreadsheets/d/1gWNZsbPm08ZI8Q9swAmLyaOUvMjZoWLdwzVbLjHXdkU/edit#gid=0
 
 #TODO Chantier: prevoir upload/photo/video/type de document != de doc officiels
-#TODO Label true pour Profil Picture
 
 date = models.DateTimeField(auto_now_add=True, blank=True)
 
