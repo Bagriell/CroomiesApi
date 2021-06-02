@@ -56,6 +56,16 @@ class HabitationAPI(generics.GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class HabitationById(generics.GenericAPIView):
+    def get(self, request, habitation_id):
+        try:
+            resp = serializers.serialize("json", [ Habitation.objects.get(pk=habitation_id),])
+            code = 200
+        except Exception as e:
+            resp = "Habitation not found."
+            code = 400
+        return Response(resp, code)
+
 class SportAPI(generics.GenericAPIView):
     serializer_class = SportSerializer
 
@@ -181,6 +191,16 @@ class CroomiesUserAPI(generics.GenericAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CroomieUserById(generics.GenericAPIView):
+    def get(self, request, croomieuser_id):
+        try:
+            resp = serializers.serialize("json", [ CroomiesUser.objects.get(pk=croomieuser_id),])
+            code = 200
+        except Exception as e:
+            resp = "CroomiesUser not found."
+            code = 400
+        return Response(resp, code)
 
 class SeekerAPI(generics.GenericAPIView):
     serializer_class = SeekerSerializer

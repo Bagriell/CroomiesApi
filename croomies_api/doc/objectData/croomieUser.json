@@ -1,0 +1,41 @@
+{
+    "data": {
+        "first_name": "totooooooo",
+        "last_name": "weeweee",
+        "password": "mdp",
+        "address": {
+            "city": "Lyon",
+            "country": "France",
+            "street": "25 rue pomme",
+            "postcode": "5000"
+        },
+        "budget": {
+            "min": "100",
+            "max": "500"
+        },
+        "numberSeeker": {
+            "numberOfRoom": 1,
+            "emptyHabitation": false
+        },
+        "date": {
+            "begin": "06/02/2021",
+            "end": "06/01/2025"
+        },
+        "profile": {
+            "age": "25",
+            "activity": "student",
+            "gender": "male",
+            "phone_number": "0600000000"
+        },
+        "answers": {
+            "diet": "vegan",
+            "drinks": "no",
+            "drugs": "no",
+            "education": "PHD",
+            "pets": "cat",
+            "speaks": "fr",
+            "religion": "none",
+            "smokes": "no"
+        }
+    }
+}
