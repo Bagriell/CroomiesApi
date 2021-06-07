@@ -51,7 +51,6 @@ class CroomiesUser(Model):
     phone_number = CharField(max_length=20, blank=True, null=True)
     diet = CharField(max_length=100, blank=True, null=True)
     drinks = CharField(max_length=100, blank=True, null=True)
-    drugs = CharField(max_length=100, blank=True, null=True)
     education = CharField(max_length=100, blank=True, null=True)
     pets = CharField(max_length=100, blank=True, null=True)
     speaks = CharField(max_length=100, blank=True, null=True)
