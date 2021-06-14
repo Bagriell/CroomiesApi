@@ -58,13 +58,19 @@ class HabitationAPI(generics.GenericAPIView):
 
 class HabitationById(generics.GenericAPIView):
     def get(self, request, habitation_id):
-        try:
-            resp = serializers.serialize("json", [ Habitation.objects.get(pk=habitation_id),])
+        #try:
+            hab_for_rm = Roomate_in_habitation.objects.filter(id_habitation = habitation_id)
+            data = []
+            data.append(Habitation.objects.get(pk=habitation_id))
+            for elem in hab_for_rm:
+                data.append(elem.id_user)
+
+            resp = serializers.serialize("json", data)
             code = 200
-        except Exception as e:
-            resp = "Habitation not found."
-            code = 400
-        return Response(resp, code)
+        #except Exception as e:
+            #resp = "Habitation not found."
+            #code = 400
+            return Response(resp, code)
 
 class SportAPI(generics.GenericAPIView):
     serializer_class = SportSerializer
@@ -195,7 +201,13 @@ class CroomiesUserAPI(generics.GenericAPIView):
 class CroomieUserById(generics.GenericAPIView):
     def get(self, request, croomieuser_id):
         try:
-            resp = serializers.serialize("json", [ CroomiesUser.objects.get(pk=croomieuser_id),])
+            rm_in_hab = Roomate_in_habitation.objects.filter(id_user = croomieuser_id)
+            data = []
+            data.append(CroomiesUser.objects.get(pk=croomieuser_id))
+            for elem in rm_in_hab:
+                data.append(elem.id_habitation)
+
+            resp = serializers.serialize("json", data)
             code = 200
         except Exception as e:
             resp = "CroomiesUser not found."
