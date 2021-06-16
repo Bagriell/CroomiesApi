@@ -1,3 +1,4 @@
+from datetime import date
 from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions
 from rest_framework.serializers import Serializer
@@ -70,7 +71,59 @@ class HabitationById(generics.GenericAPIView):
         #except Exception as e:
             #resp = "Habitation not found."
             #code = 400
-            return Response(resp, code)
+            return HttpResponse(resp,content_type="application/json") #TODO
+
+class HabitationsWithUser(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        #try:
+        habList = Habitation.objects.all()
+        data = []
+        #data.append(Habitation.objects.all())
+        for hab in habList:
+            data.append(hab.id_user_poster)
+            print(hab.id_user_poster)
+
+        resp = serializers.serialize("json", habList)
+        return HttpResponse(resp,content_type="application/json")
+
+
+class HabitationWithFilterGeo(generics.GenericAPIView): #TODO
+    def get(self, request, *args, **kwargs):
+        #* Filters are : "geo", "prices", "dates"
+        #* Geo filter only work with city name (TL:DR = need Google coordinates)
+        #try:
+            print("Geo")
+            print(self.kwargs)
+            city = self.kwargs['param']
+            data = Habitation.objects.filter(id_address__city = city)
+            resp = serializers.serialize("json", data)
+            return HttpResponse(resp,content_type="application/json")
+
+class HabitationWithFilterPrices(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        #* Filters are : "geo", "prices", "dates"
+        #try:
+            print("Prices")
+            print(self.kwargs)
+            priceMin = self.kwargs['priceMin']
+            priceMax = self.kwargs['priceMax']
+            data = Habitation.objects.filter(price__gte = priceMin, price__lte = priceMax)
+            resp = serializers.serialize("json", data)
+            return HttpResponse(resp,content_type="application/json")
+
+class HabitationWithFilterDates(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        #* Filters are : "geo", "prices", "dates"
+        #try:
+            print("Dates")
+            print(self.kwargs)
+            dateBegin = self.kwargs['datebegin'] #* date format YYYY-MM-DD
+            dateEnding = self.kwargs['dateending']
+
+            data = Habitation.objects.filter(id_date_slots__date__gte = dateBegin, id_date_slots__date__lte = dateEnding)
+
+            resp = serializers.serialize("json", data)
+            return HttpResponse(resp,content_type="application/json") #TODO
 
 class SportAPI(generics.GenericAPIView):
     serializer_class = SportSerializer
