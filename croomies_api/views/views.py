@@ -9,7 +9,7 @@ from ..serializers import UserSerializer,RegisterSerializer, HabitationSerialize
 from django.contrib.auth import login
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from knox.views import LoginView as KnoxLoginView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from rest_framework import status
 from .views_utils import *
@@ -67,10 +67,11 @@ class HabitationById(generics.GenericAPIView):
 
             resp = serializers.serialize("json", data)
             code = 200
+            print(resp[0])
         #except Exception as e:
             #resp = "Habitation not found."
             #code = 400
-            return Response(resp, code)
+            return HttpResponse(resp,content_type="application/json")
 
 class SportAPI(generics.GenericAPIView):
     serializer_class = SportSerializer
