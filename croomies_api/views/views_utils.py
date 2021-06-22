@@ -13,6 +13,7 @@ from django.core import serializers
 from rest_framework import status
 import json
 import datetime
+from ..IA.format_data import predict_cluster
 
 class colocation_seekerAPI(generics.GenericAPIView):
 
@@ -60,7 +61,9 @@ class colocation_seekerAPI(generics.GenericAPIView):
             return Response("Input Ending date is not valid.." , status=status.HTTP_400_BAD_REQUEST)
 
         new_case_dateYYYYMMDDend = year+"-"+month+"-"+day
-
+        datajson = json.dumps(data["data"])
+        id_cluster = predict_cluster(datajson)
+        print(id_cluster)
         CroomiesUser.objects.create(first_name=data["data"]["first_name"], last_name=data["data"]["last_name"], password=data["data"]["password"], age=data["data"]["profile"]["age"], activity=data["data"]["profile"]["activity"], gender=data["data"]["profile"]["gender"], phone_number=data["data"]["profile"]["phone_number"], diet=data["data"]["answers"]["diet"], drinks=data["data"]["answers"]["drinks"], education=data["data"]["answers"]["education"], pets=data["data"]["answers"]["pets"], speaks=data["data"]["answers"]["speaks"], religion=data["data"]["answers"]["religion"], smokes=data["data"]["answers"]["smokes"])
         Address.objects.create(city=data["data"]["address"]["city"], country=data["data"]["address"]["country"], address=data["data"]["address"]["street"], postcode=data["data"]["address"]["postcode"])
         Seeker.objects.create(id_user= CroomiesUser.objects.get(first_name= data["data"]["first_name"], last_name=data["data"]["last_name"], password= data["data"]["password"]), budget_min= data["data"]["budget"]["min"], budget_max= data["data"]["budget"]["max"], number_of_room= data["data"]["numberSeeker"]["numberOfRoom"], is_empty_habitation= data["data"]["numberSeeker"]["emptyHabitation"], searching_from= new_case_dateYYYYMMDDbegin, searching_to= new_case_dateYYYYMMDDend)

@@ -23,6 +23,7 @@ class Media(Model):
         return "%s" % (self.url)
 
 class CroomiesUser(Model):
+    cluster = IntegerField(blank=True, null=True)
     first_name = CharField(max_length=20)
     last_name = CharField(max_length=20)
     is_owner = BooleanField(default=False)
