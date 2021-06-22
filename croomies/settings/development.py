@@ -99,8 +99,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'croomies_db',
-        'USER': 'croomies',
-        'PASSWORD': 'croomies', #! REMOVE
+        'USER': 'weiss',
+        'PASSWORD': 'miffy123', #! REMOVE
         'HOST': 'localhost',
         'PORT': '5432',
         'CONN_MAX_AGE': 500

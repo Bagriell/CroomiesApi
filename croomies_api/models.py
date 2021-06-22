@@ -6,7 +6,6 @@ from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOn
 from knox.models import User
 from datetime import date
 
-
 #* Mindmap : https://www.mindmeister.com/fr/1814486318?t=YE8gxhCFsd
 #* Excel : https://docs.google.com/spreadsheets/d/1gWNZsbPm08ZI8Q9swAmLyaOUvMjZoWLdwzVbLjHXdkU/edit#gid=0
 
@@ -27,7 +26,7 @@ class CroomiesUser(Model):
     last_name = CharField(max_length=20)
     is_owner = BooleanField(default=False)
     is_seeker = BooleanField(default=False)
-    description = TextField()
+    description = TextField(blank=True, null=True)
     email = EmailField()
     password = CharField(max_length=20)
     is_media = BooleanField(default=False)

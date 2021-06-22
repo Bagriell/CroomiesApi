@@ -40,6 +40,7 @@ urlpatterns = [
     path('api/habitation/geo/<str:param>/', views.HabitationWithFilterGeo.as_view(), name='HabitationWithFilterGeo'),
     path('api/habitation/prices/<int:priceMin>/<int:priceMax>/', views.HabitationWithFilterPrices.as_view(), name='HabitationWithFilterPrices'),
     path('api/habitation/dates/<str:datebegin>/<str:dateending>/', views.HabitationWithFilterDates.as_view(), name='HabitationWithFilterDates'),
+    path('api/habitation/filters/<str:param>/<int:priceMin>/<int:priceMax>/<str:datebegin>/<str:dateending>/', views.HabitationWithFilterAll.as_view(), name='HabitationWithFilterDates'),
     path('api/sport/', views.SportAPI.as_view(), name='Sport'),
     path('api/film/', views.FilmAPI.as_view(), name='Film'),
     path('api/music/', views.MusicAPI.as_view(), name='Music'),
@@ -58,5 +59,6 @@ urlpatterns = [
     path('api/date_slots/', views.Date_slotsAPI.as_view(), name='Date_slots'),
     path('api/visite/', views.VisiteAPI.as_view(), name='Visite'),
     path('api/application/', views.ApplicationAPI.as_view(), name='Application'),
-    path('api/register_seeker/', views.colocation_seekerAPI.as_view(), name='colocation_seeker')
+    path('api/register_seeker/', views.colocation_seekerAPI.as_view(), name='colocation_seeker'),
+    path('api/login_croomies/<str:email>/<str:mdp>', views.LoginCroomies.as_view(), name='colocation_seeker')
 ]

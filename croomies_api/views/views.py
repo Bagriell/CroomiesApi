@@ -1,4 +1,6 @@
+from collections import UserList
 from datetime import date
+from decimal import Context
 from django.shortcuts import render
 from rest_framework import viewsets, generics, permissions
 from rest_framework.serializers import Serializer
@@ -29,7 +31,7 @@ class RegisterAPI(generics.GenericAPIView):
         user = serializer.save()
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": AuthToken.objects.create(user)[1]
+            "token": AuthToken.objects.create(user)[1],
         })
 
 
@@ -41,7 +43,28 @@ class LoginAPI(KnoxLoginView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         login(request, user)
-        return super(LoginAPI, self).post(request, format=None)
+
+        #return super(LoginAPI, self).post(request, format=None)
+        return HttpResponse("coucou")
+
+class LoginCroomies(generics.GenericAPIView):
+    serializer_class = CroomiesUserSerializer
+
+    def post(self, request, *args, **kwargs):
+        data = []
+
+        mail = self.kwargs["email"]
+        passwd = self.kwargs["mdp"]
+        data = CroomiesUser.objects.filter(email__istartswith = mail, password = passwd)
+        #print(data)
+        if(not data.exists()):
+            resp = "wrong email or password"
+            code = 400
+            return(Response(resp, code))
+        resp = serializers.serialize("json", data)
+        print(resp)
+        return HttpResponse(resp,content_type="application/json")
+
 
 class HabitationAPI(generics.GenericAPIView):
     serializer_class = HabitationSerializer
@@ -76,14 +99,15 @@ class HabitationById(generics.GenericAPIView):
 class HabitationsWithUser(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         #try:
-        habList = Habitation.objects.all()
-        data = []
-        #data.append(Habitation.objects.all())
-        for hab in habList:
-            data.append(hab.id_user_poster)
-            print(hab.id_user_poster)
 
-        resp = serializers.serialize("json", habList)
+        data = []
+        habList = Habitation.objects.all()
+        for hab in habList.iterator():
+            data.append(hab)
+            if(hab.id_user_poster != None):
+                data.append(CroomiesUser.objects.filter(pk = hab.id_user_poster.id).first())
+
+        resp = serializers.serialize("json", data)
         return HttpResponse(resp,content_type="application/json")
 
 
@@ -123,7 +147,23 @@ class HabitationWithFilterDates(generics.GenericAPIView):
             data = Habitation.objects.filter(id_date_slots__date__gte = dateBegin, id_date_slots__date__lte = dateEnding)
 
             resp = serializers.serialize("json", data)
-            return HttpResponse(resp,content_type="application/json") #TODO
+            return HttpResponse(resp,content_type="application/json")
+
+class HabitationWithFilterAll(generics.GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        #try:
+            print(self.kwargs)
+            city = self.kwargs['param']
+            priceMin = self.kwargs['priceMin']
+            priceMax = self.kwargs['priceMax']
+            dateBegin = self.kwargs['datebegin'] #* date format YYYY-MM-DD
+            dateEnding = self.kwargs['dateending']
+
+            data = Habitation.objects.filter(id_address__city = city, price__gte = priceMin, price__lte = priceMax,
+                                                id_date_slots__date__gte = dateBegin, id_date_slots__date__lte = dateEnding)
+
+            resp = serializers.serialize("json", data)
+            return HttpResponse(resp,content_type="application/json")
 
 class SportAPI(generics.GenericAPIView):
     serializer_class = SportSerializer

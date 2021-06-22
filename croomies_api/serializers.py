@@ -8,13 +8,11 @@ class AddressSerializer(serializers.ModelSerializer):
         model = Address
         fields = ('city', 'address', 'country', 'postcode')
 
-# User Serializer
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email')
 
-# Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -72,7 +70,7 @@ class MediaSerializer(serializers.ModelSerializer):
 class CroomiesUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CroomiesUser
-        fields = ('first_name', 'last_name', 'is_owner', 'is_seeker', 'description', 'email', 'password','is_media', 'id_media', 'identity_card', 'student_card', 'proof_address_self', 'proof_address_guarantor', 'identity_card_guarantor', 'proof_income_self', 'proof_income_guarantor', 'tax_notice_self', 'tax_notice_guarantor', 'property_tax_guarantor', 'apl_certificate', 'nbr_rooms', 'is_whole_habitation', 'age', 'activity', 'gender', 'phone_number', 'diet', 'drinks', 'drugs', 'education', 'pets', 'speaks', 'religion', 'smokes')
+        fields = ('first_name', 'last_name', 'is_owner', 'is_seeker', 'description', 'email', 'password','is_media', 'id_media', 'identity_card', 'student_card', 'proof_address_self', 'proof_address_guarantor', 'identity_card_guarantor', 'proof_income_self', 'proof_income_guarantor', 'tax_notice_self', 'tax_notice_guarantor', 'property_tax_guarantor', 'apl_certificate', 'nbr_rooms', 'is_whole_habitation', 'age', 'activity', 'gender', 'phone_number', 'diet', 'drinks', 'education', 'pets', 'speaks', 'religion', 'smokes')
 
 class SeekerSerializer(serializers.ModelSerializer):
     class Meta:
