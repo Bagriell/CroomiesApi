@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
     path('api/habitation/', views.HabitationAPI.as_view(), name='Habitations'),
     path('api/habitation/<int:habitation_id>/', views.HabitationById.as_view(), name='HabitationsById'),
+    path('api/habitationRM/', views.HabitationRM.as_view(), name='HabitationsRM'), #* TODO faire propre
     path('api/habitation/withuser/', views.HabitationsWithUser.as_view(), name='HabitationsWithUser'), #! TODO
     path('api/habitation/geo/<str:param>/', views.HabitationWithFilterGeo.as_view(), name='HabitationWithFilterGeo'),
     path('api/habitation/prices/<int:priceMin>/<int:priceMax>/', views.HabitationWithFilterPrices.as_view(), name='HabitationWithFilterPrices'),
@@ -51,6 +52,8 @@ urlpatterns = [
     path('api/address/', views.AddressAPI.as_view(), name='Address'),
     path('api/croomiesuser/', views.CroomiesUserAPI.as_view(), name='CroomiesUser'),
     path('api/croomiesuser/<int:croomieuser_id>/', views.CroomieUserById.as_view(), name='CroomieUserById'),
+    path('api/croomiesuserRM/', views.CroomiesUserRM.as_view(), name='CroomiesUserRM'),
+
     path('api/seeker/', views.SeekerAPI.as_view(), name='Seeker'),
     path('api/matching/', views.MatchingAPI.as_view(), name='Matching'),
     path('api/roomate_in_habitation/', views.Roomate_in_habitationAPI.as_view(), name='Roomate_in_habitation'),

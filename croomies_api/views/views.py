@@ -80,6 +80,15 @@ class HabitationAPI(generics.GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class HabitationRM(generics.GenericAPIView):
+    def get(self, request):
+        count = Habitation.objects.all().delete()
+        return JsonResponse({'message': '{} Habitations were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
 class HabitationById(generics.GenericAPIView):
     def get(self, request, habitation_id):
         #try:
@@ -306,7 +315,15 @@ class CroomieUserById(generics.GenericAPIView):
         except Exception as e:
             resp = "CroomiesUser not found."
             code = 400
-        return Response(resp, code)
+        return HttpResponse(resp,content_type="application/json")
+
+class CroomiesUserRM(generics.GenericAPIView):
+    def get(self, request):
+        count = CroomiesUser.objects.all().delete()
+        return JsonResponse({'message': '{} CroomiesUsers were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+
+
+
 
 class SeekerAPI(generics.GenericAPIView):
     serializer_class = SeekerSerializer
