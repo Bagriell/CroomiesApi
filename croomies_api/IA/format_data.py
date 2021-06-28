@@ -12,6 +12,10 @@ import os
 def predict_cluster(jsonData):
     # read data
     data_user = pd.read_json(jsonData)
+    data_user.pop('first_name')
+    data_user.pop('last_name')
+    data_user.pop('password')
+    
     # reorder columns
     data_user.answers.age = data_user.profile.age
     data_user.drop(columns=['address', 'budget', 'date',
